@@ -58,9 +58,24 @@ There are four cases:
 to cover the smallest power of two in _X_.
 1. _r = minwidth_: _S(I,X) = S(I - {a}, X - r) U {a}_. In other words, we use
 the coin to pay for the part _r_ of _X_. The solution set to our problem is
-then, recursively, _a_ plus the solution set to the problem with _r_ paid for in
-_X_ and without the coin _a_ in _I_.
-1. _r < minwidth_: 
+then, recursively, _{a}_ plus the solution set to the problem with _r_ paid for 
+in _X_ and without the coin _a_ in _I_.
+1. _r < minwidth_ and _a_ is the sole coin of value _r_: 
+_S(I,X) = S(I - {a}, X)_. In other words, throw away coin _a_. Its face value is
+too low to pay for _r_ and it cannot be combined with other coins. Solve the
+problem without _{a}_ in _I_.
+1. _r < minwidth_ and there are at least two items with value _r_ in _I_. Take
+_a_ and _a'_ the two coins of value _r_ with smallest _w_. Form a **package**
+_b_. The face value and numismatic value of _b_ are the sum of that of _a_ and
+_a'_. The solution is then recursively _S(I - {a, a'} U {b}, X)_ (if we allow
+_b_ to be part of the solution set and we know it is a package of {a, a'}.).
+Explained simply, we form a package with the two coins of smallest numismatic
+value and include it in _I_, treating it as a new virtual coin, after removing 
+the two original coins.
+
+And terminations:
+* If _X = 0_, then _S(I,X)_ is empty.
+* If _X > 0_ and _I_ is empty then there is no solution.
 
 ## References
 1. Larmore, Lawrence L., and Daniel S. Hirschberg. "A fast algorithm for optimal length-limited Huffman codes." Journal of the ACM (JACM) 37.3 (1990): 464-473. https://doi.org/10.1145/79147.79150
