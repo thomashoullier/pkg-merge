@@ -5,8 +5,8 @@ of the details of the package-merge algorithm for the sake of documentation.
 
 ⚠⚠⚠ The implementation is for the sake of testing and research. Better
 algorithms have been published for solving the exact same problem with much
-better (space) performance [2]. If you use this in production, you are a 
-**criminal**. ⚠⚠⚠
+better space performance [2]. Please ponder a while before using this in
+production as is. ⚠⚠⚠
 
 ## Problem presentation
 [1] introduces the (binary) "Coin Collector's problem". A numismat has run out
