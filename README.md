@@ -13,6 +13,13 @@ of money and must pay for his groceries with his coin collection. Each coin has
 a face value and a numismatic value. The numismat wants to find the set of coins
 that have a given total face value while minimizing the total numismatic value.
 
+The coins can only have face values in (possibly negative) powers of two. The
+problem is then suited to find sets of coins amounting to total sums _X_ that
+are easily decomposed in a sum of powers of two.
+
+Let us represent coins by the pair: (_i_, _w_).
+* _i_: The coin has face value 2^i.
+* _w_: Weight of the coin, its numismatic value.
 
 
 ## References
