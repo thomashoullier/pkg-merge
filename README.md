@@ -49,7 +49,7 @@ We will update _I_ and _X_ throughout the procedure.
 available in _I_.
 * _a_ is the coin with smallest numismatic value _w_ out of the coins of face 
 value _r_.
-* _mindwidth_ is the smallest power of two in the decomposition of X.
+* _minwidth_ is the smallest power of two in the decomposition of X.
 
 We call the optimal subset of coins for _I_ and _X_: _S(I,X)_.
 
@@ -68,14 +68,14 @@ problem without _{a}_ in _I_.
 _a_ and _a'_ the two coins of value _r_ with smallest _w_. Form a **package**
 _b_. The face value and numismatic value of _b_ are the sum of that of _a_ and
 _a'_. The solution is then recursively _S(I - {a, a'} U {b}, X)_ (if we allow
-_b_ to be part of the solution set and we know it is a package of {a, a'}.).
+_b_ to be part of the solution set and we know it is a package of {a, a'}).
 Explained simply, we form a package with the two coins of smallest numismatic
 value and include it in _I_, treating it as a new virtual coin, after removing 
 the two original coins.
 
 And terminations:
 * If _X = 0_, then _S(I,X)_ is empty.
-* If _X > 0_ and _I_ is empty then there is no solution.
+* If _X > 0_ and _I_ is empty then there is **no solution**.
 
 ## References
 1. Larmore, Lawrence L., and Daniel S. Hirschberg. "A fast algorithm for optimal length-limited Huffman codes." Journal of the ACM (JACM) 37.3 (1990): 464-473. https://doi.org/10.1145/79147.79150
