@@ -5,21 +5,24 @@
 (in-package :pm)
 
 (defun pm-rec (I-init X)
-  " Recursive version of package-merge.
-I: I-init: Vector of coins. In any order.
+  "Recursive version of package-merge.
+I: I-init: Vector of coins. In any order. Destroyed.
    X: Vector of i values in increasing order. The number X represents is a 
-      decomposition in powers of 2, being 2^i.
+      decomposition in powers of 2, being 2^i. Destroyed.
       eg. #(-3 -1 2 4) for X = 2^-3 + 2^-1 + 2^2 + 2^4."
   (let (;; Binary heap to always get the smallest coin a when popping.
 	(I (binhp:make-heap I-init #'coin-order))
 	;; Solution vector of coins/packages to the problem.
-	(S (make-array 0 :fill-pointer 0)))
+	(S (make-array 0 :fill-pointer 0 :element-type 'coin))
+	;; Solution vector of initial coins. Returned if exists.
+	(sol-coins (make-array 0 :fill-pointer 0 :element-type 'coin)))
     ;; Call the recursion, returns T on success, nil if there was no solution.
     (when (not (pm-rec-step I X S)) (return-from pm-rec nil))
     ;; The solution is in S, in the shape of a forest of binary trees of coins.
     ;; We must gather all the leaves of all the trees.
-
-    ))
+    (loop for coinpack across S do
+      (leafcoins coinpack sol-coins))
+    sol-coins))
 
 (defun pm-rec-step (I X S)
   "Recursion step for recursive package-merge."
@@ -59,3 +62,16 @@ I: I-init: Vector of coins. In any order.
 				       :left-coin (vector-pop I)
 				       :right-coin (vector-pop I)))
 	    (pm-rec-step I X S))))))
+
+(defun leafcoins (tree leaves)
+  "Finds recursively all the leaves in the tree and pushes them to a vector.
+I: tree: A coin, can be a package.
+   leaves: Vector of all the leaf coins. Contains all the leaf coins at the
+           end."
+  ;; Termination. A coin has two children or none at all and is a leaf.
+  (when (not (coin-left-coin tree))
+    (vector-push-extend tree leaves)
+    (return-from leafcoins))
+  ;; Recursion
+  (leafcoins (coin-left-coin tree) leaves)
+  (leafcoins (coin-right-coin tree) leaves))

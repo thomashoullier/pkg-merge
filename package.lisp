@@ -1,4 +1,4 @@
 (defpackage :pm
   (:documentation "Package-merge implementations.")
   (:use :cl)
-  (:export ))
+  (:export #:pm-rec))
