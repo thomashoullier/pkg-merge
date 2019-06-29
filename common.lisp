@@ -3,16 +3,14 @@
 (in-package :pm)
 
 (defstruct coin
-  ;; Unique identifier for the coin, can be an index etc.
-  ;; Useful to return the solution set of coins.
-  (id 0)
   ;; Face value of the coin. Stored as 'i' for the value '2^i'.
   (face 0 :type fixnum)
   ;; Numismatic value, or 'weight' of coin. Real number in the most general
   ;; case.
   (weight 0)
-  ;; Tail, to keep track of which coin is in which package.
-  (tail nil :type (or null coin)))
+  ;; Each coin can be composed of two other coins, stored here. 
+  (left-coin nil :type (or null coin))
+  (right-coin nil :type (or null coin)))
 
 (defun coin-order (coin1 coin2)
   "Order relation to sort coins in non decreasing order of face first and then
