@@ -23,7 +23,7 @@ TODO: use nif here."
     (if (< f1 f2)
 	T
 	(if (= f1 f2)
-	    (if (<= (coin-weight coin1) (coin-weight coin2))
+	    (if (< (coin-weight coin1) (coin-weight coin2))
 		T
 		nil)
 	    nil))))

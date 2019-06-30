@@ -14,7 +14,7 @@ TODO: use nif here."
     (if (< f1 f2)
 	T
 	(if (= f1 f2)
-	    (if (<= (coin-test-weight coin1) (coin-test-weight coin2))
+	    (if (< (coin-test-weight coin1) (coin-test-weight coin2))
 		T
 		nil)
 	    nil))))
@@ -34,7 +34,7 @@ ind1 is the reference, ind2 is the sequence to validate."
       (psetf (aref ic1 i) (aref ind1 i)
 	     (aref ic2 i) (aref ind2 i)))
     ;; Sort both vectors
-    (psetf ic1 (sort ic1 #'<=) ic2 (sort ic2 #'<=))
+    (psetf ic1 (sort ic1 #'<) ic2 (sort ic2 #'<))
     ;; Indexes that are the same in both lists are obviously the same coins.
     (loop for i1 across ic1
 	  for i2 across ic2
@@ -44,7 +44,7 @@ ind1 is the reference, ind2 is the sequence to validate."
 		     (aref ic2 (1- (length ic2))) (aref ic2 i))
 	      (vector-pop ic1) (vector-pop ic2)))
     ;; Sort again
-    (psetf ic1 (sort ic1 #'<=) ic2 (sort ic2 #'<=))
+    (psetf ic1 (sort ic1 #'<) ic2 (sort ic2 #'<))
     ;; Check there are no duplicates in ic2
     (setf ibuf (aref ic2 0))
     (loop for i from 1 below (length ic2) do
