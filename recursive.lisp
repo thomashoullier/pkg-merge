@@ -8,9 +8,9 @@
   "Recursive version of package-merge.
 I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
    weights: Array of weights. Must correspond with the order in 'faces'.
-   X: Vector of i values in increasing order. The number X represents is a 
+   X: Vector of i values in decreasing order. The number X represents is a 
       decomposition in powers of 2, being 2^i.
-      eg. #(-3 -1 2 4) for X = 2^-3 + 2^-1 + 2^2 + 2^4."
+      eg. #(4 2 -1 -3) for X = 2^4 + 2^2 + 2^-1 + 2^-3."
   (let* (;; Copy of X
 	 (X-cop (make-array (length X) :fill-pointer (length X)
 				       :element-type 'fixnum))
@@ -52,7 +52,7 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
     (return-from pm-rec-step T))
   (let* ((a (binhp:peek I))
 	 (r (coin-face a))
-	 (minwidth (aref X 0)))
+	 (minwidth (aref X (1- (length X)))))
     (when (> r minwidth)
       ;; No solution exists.
       (return-from pm-rec-step nil))
@@ -67,18 +67,21 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 	  (pm-rec-step I X S))
 	(progn
 	  ;; If a is the sole remaining coin in I, throw it away.
-	  (when (<= (binhp:size I) 1) (binhp:extract I) (pm-rec-step I X S))
+	  (when (<= (binhp:size I) 1)
+	    (binhp:extract I) 
+	    (return-from pm-rec-step (pm-rec-step I X S)))
 	  ;; Check the coin a' after a in I for its face value.
 	  (let* ((ap (binhp:peek-second I))
 		 (rp (coin-face ap)))
 	    ;; If a' is not of same face value then throw away a and continue.
-	    (when (/= r rp) (binhp:extract I) (pm-rec-step I X S))
+	    (when (/= r rp) (binhp:extract I)
+		  (return-from pm-rec-step (pm-rec-step I X S)))
 	    ;; Else make a package, insert it in I and continue.
 	    (binhp:insert I (make-coin :face (+ r rp)
 				       :weight (+ (coin-weight a)
 						  (coin-weight ap))
-				       :left-coin (vector-pop I)
-				       :right-coin (vector-pop I)))
+				       :left-coin (binhp:extract I)
+				       :right-coin (binhp:extract I)))
 	    (pm-rec-step I X S))))))
 
 (defun leafcoins (tree leaves)
