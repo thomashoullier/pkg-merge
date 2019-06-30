@@ -83,4 +83,11 @@ ind1 is the reference, ind2 is the sequence to validate."
        (S (pm:pm-rec faces weights X)))
   (check-inds possible-S S faces weights))
 
+;; Test 3:
+(let* ((faces #(-1 -1 -1 -1 -1 -1 -1 0 0))
+       (weights #(2 2 2 2 2 2 2 6 1))
+       (X #(1))
+       (possible-S #(0 1 8)))
+  (check-inds possible-S (pm:pm-rec faces weights X) faces weights))
+
 (format t "recur-test: PASSED.~%")

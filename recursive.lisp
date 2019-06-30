@@ -77,7 +77,7 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 	    (when (/= r rp) (binhp:extract I)
 		  (return-from pm-rec-step (pm-rec-step I X S)))
 	    ;; Else make a package, insert it in I and continue.
-	    (binhp:insert I (make-coin :face (+ r rp)
+	    (binhp:insert I (make-coin :face (1+ r)
 				       :weight (+ (coin-weight a)
 						  (coin-weight ap))
 				       :left-coin (binhp:extract I)
