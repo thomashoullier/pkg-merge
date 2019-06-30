@@ -1,4 +1,5 @@
 (defpackage :pm
   (:documentation "Package-merge implementations.")
   (:use :cl)
-  (:export #:pm-rec))
+  (:export #:pm-rec
+	   #:make-coin))

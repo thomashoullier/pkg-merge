@@ -3,6 +3,8 @@
 (in-package :pm)
 
 (defstruct coin
+  ;; Unique id for coin, eg. index.
+  (id -1 :type fixnum)
   ;; Face value of the coin. Stored as 'i' for the value '2^i'.
   (face 0 :type fixnum)
   ;; Numismatic value, or 'weight' of coin. Real number in the most general
