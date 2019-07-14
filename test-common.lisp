@@ -22,6 +22,8 @@ TODO: use nif here."
 "Check two sets of indexes in faces/weights to see if they point to coins
 of the same value.
 ind1 is the reference, ind2 is the sequence to validate."
+  ;; First check the case where both are nil.
+  (when (not ind1) (assert (not ind2)))
   (assert (= (length ind1) (length ind2)))
   (let ((ic1 (make-array (length ind1) :fill-pointer (length ind1)))
 	(ic2 (make-array (length ind2) :fill-pointer (length ind2)))
