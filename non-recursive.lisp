@@ -49,7 +49,8 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 	(setf curld (gethash d Lds)))
       (vector-push-extend (vector-pop I) curld))
     ;; Main algorithm loop.
-    (loop while (> (length X-cop) 0) do
+    (loop while (> (length X-cop) 0)
+	  for iloop from 0 do
       (if (> (length ds) 0)
 	  (setf d (aref ds (1- (length ds))))
 	  (return-from pm-nonrec nil))
@@ -63,10 +64,16 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 	(vector-pop X-cop))
       ;; Perform PACKAGE and MERGE.
       (let ((coin1) (coin2)
-	    (nextld (gethash (1+ d) Lds))
-	    (P (make-array 0 :fill-pointer 0
-			     :element-type 'coin)))
-	;; Put all the packages into P.
+	    (nextld (gethash (1+ d) Lds)))
+	;; Remove the current d from the available list
+	(vector-pop ds)
+	;; If packages will be made and nextld is not declare then do it
+	(when (and (not nextld) (> (length curld) 1))
+	  (setf (gethash (1+ d) Lds)
+		(make-array 0 :fill-pointer 0 :element-type 'coin))
+	  (setf nextld (gethash (1+ d) Lds))
+	  (vector-push-extend (1+ d) ds))
+	;; Make all the packages and push into next set.
 	(loop while (> (length curld) 1) do
 	  (psetf coin1 (vector-pop curld)
 		 coin2 (vector-pop curld))
@@ -75,18 +82,15 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 		      :weight (+ (coin-weight coin1)
 				 (coin-weight coin2))
 		      :left-coin coin1
-		      :right-coin coin2) P))
+		      :right-coin coin2) nextld))
 	;; Discard Ld
 	(remhash d Lds)
-	(vector-pop ds)
-	;; If nextld is not yet declared, do it now
-	(when (and (> (length P) 0) (not nextld))
-	  (setf nextld (make-array 0 :fill-pointer 0 :element-type 'coin))
-	  (vector-push-extend (1+ d) ds))
-	;; Merge P into the next face value set nextld
-	(setf nextld (merge 'vector P nextld
-			    (lambda (coin1 coin2) (< (coin-weight coin1)
-						     (coin-weight coin2)))))))
+	;; Finally sort the new set.
+	(when nextld 
+	  (setf (gethash (1+ d) Lds)
+		(sort (gethash (1+ d) Lds) 
+		      (lambda (coini1 coini2) (> (coin-weight coini1)
+						 (coin-weight coini2))))))))
     ;; S is the solution set of coins/packages. It's a forest, we must get the
     ;; ids of the leaves of all the trees.
     (loop for coinpack across S do
