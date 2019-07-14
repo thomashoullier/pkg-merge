@@ -1,12 +1,15 @@
 # Package-merge algorithm Common Lisp implementation
-We implemented the package-merge algorithm [1] for solving the problem of
-length-limited Huffman coding. This is mainly a (hopefully clear) write-up
+We implemented the package-merge algorithm [1] for solving the Coin Collector 
+problem. This is mainly a (hopefully clear) write-up
 of the details of the package-merge algorithm for the sake of documentation.
 
+This is linked to the problem of length-limited Huffman coding, but we just
+limit ourselves to the Coin Collector problem here for the sake of clarity.
+
 ⚠⚠⚠ The implementation is for the sake of testing and research. Better
-algorithms have been published for solving the exact same problem with much
-better space performance [2]. Please ponder a while before using this in
-production as is. ⚠⚠⚠
+algorithms have been published for solving the length-limited Huffman coding
+problem with better space performance [2]. Please ponder a while before using
+this in production as is. ⚠⚠⚠
 
 ## Problem presentation
 [1] introduces the (binary) "Coin Collector's problem". A numismat has run out
@@ -76,6 +79,8 @@ the two original coins.
 And terminations:
 * If _X = 0_, then _S(I,X)_ is empty.
 * If _X > 0_ and _I_ is empty then there is **no solution**.
+
+### Non-recursive point of view
 
 ## References
 1. Larmore, Lawrence L., and Daniel S. Hirschberg. "A fast algorithm for optimal length-limited Huffman codes." Journal of the ACM (JACM) 37.3 (1990): 464-473. https://doi.org/10.1145/79147.79150
