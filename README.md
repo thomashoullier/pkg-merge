@@ -81,6 +81,34 @@ And terminations:
 * If _X > 0_ and _I_ is empty then there is **no solution**.
 
 ### Non-recursive point of view
+We arrange the set of coins I in subsets _Ld_ according to their face value
+_2^d_. The sets _Ld_ are sorted by non-decreasing weights. Let _S_ be an optimal
+solution set of the problem. _S_ is empty at the start of the algorithm.
+We alter very slightly the formulation of [1] so as
+to make things clearer (in our view).
+The algorithm goes as follows:
+
+* Loop while _X > 0_
+  * _minwidth_ = smallest _2^d_ term in the diadic expansion of _X_.
+  * Find _d_, the minimum _d_ such that _Ld_ is non-empty. If it doesn't exist 
+then there is **no solution**.
+  * _r = 2^d_.
+  * if _r > minwidth_ then **no solution**.
+  * else if _r = minwidth_.
+    * Pop the minimum weight item from _Ld_ and insert it in _S_.
+    * _X = X - minwidth_.
+  * end if
+  * _Pd+1 = PACKAGE(Ld)_.
+  * Discard _Ld_.
+  * _Ld+1 = MERGE(Pd+1, Ld+1)_.
+* S is an optimal solution.
+
+PACKAGE and MERGE refer to the following operations:
+  * PACKAGE: Form the list _Pd+1_ by combining consecutive pairs of coins in the
+set _Ld_, with coins ranked from smallest weight to greatest. If there is a
+heaviest coin left alone at the end of the operation, it is simply discarded.
+  * MERGE: Merge _Pd+1_ into the next set _Ld+1_, while maintaining the
+non-decreasing weight order.
 
 ## References
 1. Larmore, Lawrence L., and Daniel S. Hirschberg. "A fast algorithm for optimal length-limited Huffman codes." Journal of the ACM (JACM) 37.3 (1990): 464-473. https://doi.org/10.1145/79147.79150
