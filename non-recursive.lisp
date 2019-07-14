@@ -2,7 +2,7 @@
 
 (in-package :pm)
 
-(defun pm-nonrecur (faces weights X)
+(defun pm-nonrec (faces weights X)
   "Non-recursive version of package-merge.
 I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
    weights: Array of weights. Must correspond with the order in 'faces'.
@@ -52,11 +52,11 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
     (loop while (> (length X-cop) 0) do
       (if (> (length ds) 0)
 	  (setf d (aref ds (1- (length ds))))
-	  (return-from pm-nonrecur nil))
+	  (return-from pm-nonrec nil))
       (setf curld (gethash d Lds))
       (setf minwidth (aref X-cop (1- (length X-cop))))
       ;; The smallest coin cannot pay for the smallest term in X.
-      (when (> d minwidth) (return-from pm-nonrecur nil))
+      (when (> d minwidth) (return-from pm-nonrec nil))
       (when (= d minwidth)
 	;; Use the smallest coin in Ld to pay for a part of X.
 	(vector-push-extend (vector-pop curld) S)
@@ -80,7 +80,7 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 	(remhash d Lds)
 	(vector-pop ds)
 	;; If nextld is not yet declared, do it now
-	(when (not nextld)
+	(when (and (> (length P) 0) (not nextld))
 	  (setf nextld (make-array 0 :fill-pointer 0 :element-type 'coin))
 	  (vector-push-extend (1+ d) ds))
 	;; Merge P into the next face value set nextld
