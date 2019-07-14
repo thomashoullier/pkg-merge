@@ -15,6 +15,7 @@
     (setf (aref faces i) (- (random (* 2 maxface)) maxface)))
   (loop for i from 0 below nX do
     (setf (aref X i) (- (random (* 2 maxface)) maxface)))
+  (setf X (sort X #'>))
   ;; Computing the two results.
   (psetf recur (pm:pm-rec faces weights X)
 	 nonrecur (pm:pm-nonrec faces weights X))
