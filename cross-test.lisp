@@ -1,6 +1,6 @@
 ;;;; Cross-checking the two implementations. Uses random tests.
 
-(let* ((ncoins (1+ (random 100)))
+(let* ((ncoins (1+ (random 20)))
        (nX (1+ (random 10)))
        (maxweight (1+ (random 40)))
        (maxface (1+ (random 5))) ;+-
@@ -15,8 +15,9 @@
     (setf (aref faces i) (- (random (* 2 maxface)) maxface)))
   (loop for i from 0 below nX do
     (setf (aref X i) (- (random (* 2 maxface)) maxface)))
-  (setf X (sort X #'>))
+  (setf X (delete-duplicates (sort X #'>)))
   ;; Computing the two results.
   (psetf recur (pm:pm-rec faces weights X)
 	 nonrecur (pm:pm-nonrec faces weights X))
-  (format t "~a~%~A~%" recur nonrecur))
+  (format t "~A~%~A~%~A~%~A~%~A" faces weights X recur nonrecur)
+  (check-inds recur nonrecur faces weights))
