@@ -64,7 +64,8 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 	(vector-pop X-cop))
       ;; Perform PACKAGE and MERGE.
       (let ((coin1) (coin2)
-	    (nextld (gethash (1+ d) Lds)))
+	    (nextld (gethash (1+ d) Lds))
+	    (sortp))
 	;; Remove the current d from the available list
 	(vector-pop ds)
 	;; If packages will be made and nextld is not declare then do it
@@ -73,6 +74,8 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 		(make-array 0 :fill-pointer 0 :element-type 'coin))
 	  (setf nextld (gethash (1+ d) Lds))
 	  (vector-push-extend (1+ d) ds))
+	;; Check whether a sort will be needed.
+	(when (> (length curld) 1) (setf sortp T))
 	;; Make all the packages and push into next set.
 	(loop while (> (length curld) 1) do
 	  (psetf coin1 (vector-pop curld)
@@ -85,8 +88,8 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 		      :right-coin coin2) nextld))
 	;; Discard Ld
 	(remhash d Lds)
-	;; Finally sort the new set.
-	(when nextld 
+	;; Finally sort the new set if needed.
+	(when (and nextld sortp)
 	  (setf (gethash (1+ d) Lds)
 		(sort (gethash (1+ d) Lds) 
 		      (lambda (coini1 coini2) (> (coin-weight coini1)
