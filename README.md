@@ -41,11 +41,15 @@ algorithm, which could maybe elude the readers of [1].
 ### General intuitive idea
 Let us take a particular problem defined by:
 * The coins with face values _2^i_ and numismatic values _w_:
+
+| ---- | -- | -- | -- | -- | -- | -- | -- | -- |
 | coin id | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 | face | -2 | -2 | -2 | -2 | -1 | -1 | 1 | 1 |
 | weight | 1 | 1 | 3 | 4 | 2 | 5 | 1 | 3 |
 
 * The sum _X_ to pay and its diadic expansion terms _k_. _X = Sum(2^k)_.
+
+| -- | -- | -- | -- |
 | k | -2 | 0 | 1 |
 
 ### Recursive point of view
