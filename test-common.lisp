@@ -1,23 +1,5 @@
 ;;;; Helpers common to all the tests.
 
-(defstruct coin-test
-  (face)
-  (weight))
-
-(defun coin-order (coin1 coin2)
-  "Order relation to sort coins in non decreasing order of face first and then
-in non decreasing order of weight.
-TODO: use nif here."
-  (let ((f1 (coin-test-face coin1))
-	(f2 (coin-test-face coin2)))
-    (if (< f1 f2)
-	T
-	(if (= f1 f2)
-	    (if (< (coin-test-weight coin1) (coin-test-weight coin2))
-		T
-		nil)
-	    nil))))
-
 (defun check-inds (ind1 ind2 faces weights Xval)
   "Checks that both ind1 and ind2 respect:
 * No duplicates.
