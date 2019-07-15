@@ -18,53 +18,37 @@ TODO: use nif here."
 		nil)
 	    nil))))
 
-(defun check-inds (ind1 ind2 faces weights)
-"Check two sets of indexes in faces/weights to see if they point to coins
-of the same value.
-ind1 is the reference, ind2 is the sequence to validate."
-  ;; First check the case where both are nil.
-  (when (not ind1) (assert (not ind2)) (return-from check-inds T))
-  (assert (= (length ind1) (length ind2)))
-  (let ((ic1 (make-array (length ind1) :fill-pointer (length ind1)))
-	(ic2 (make-array (length ind2) :fill-pointer (length ind2)))
-	(c1 (make-array 0 :fill-pointer 0 :element-type 'coin-test))
-	(c2 (make-array 0 :fill-pointer 0 :element-type 'coin-test))
-	(ibuf 0))
-    ;; Fill both vectors
-    (loop for i from 0 below (length ind1) do
-      (psetf (aref ic1 i) (aref ind1 i)
-	     (aref ic2 i) (aref ind2 i)))
-    ;; Sort both vectors
-    (psetf ic1 (sort ic1 #'<) ic2 (sort ic2 #'<))
-    ;; Indexes that are the same in both lists are obviously the same coins.
-    (loop for i1 across ic1
-	  for i2 across ic2
-	  for i from 0 do
-	    (when (= i1 i2)
-	      (psetf (aref ic1 (1- (length ic1))) (aref ic1 i)
-		     (aref ic2 (1- (length ic2))) (aref ic2 i))
-	      (vector-pop ic1) (vector-pop ic2)))
-    ;; Sort again
-    (psetf ic1 (sort ic1 #'<) ic2 (sort ic2 #'<))
-    ;; Check there are no duplicates in ic2
-    (setf ibuf (aref ic2 0))
-    (loop for i from 1 below (length ic2) do
-      (assert (/= (aref ic2 i) ibuf))
-      (setf ibuf (aref ic2 i)))
-    ;; Now compare the indexes that are not the same.
-    ;; Pull all the coins, sort them and compare.
-    (loop for i1 across ic1
-	  for i2 across ic2 do
-	    (vector-push-extend (make-coin-test :face (aref faces i1)
-						:weight (aref weights i1))
-				c1)
-	    (vector-push-extend (make-coin-test :face (aref faces i2)
-						:weight (aref weights i2))
-				c2))
-    (psetf c1 (sort c1 #'coin-order)
-	   c2 (sort c2 #'coin-order))
-    ;; Compare the coins one by one.
-    (loop for cc1 across c1
-	  for cc2 across c2 do
-	    (assert (and (= (coin-test-face cc1) (coin-test-face cc2))
-			 (= (coin-test-weight cc1) (coin-test-weight cc2)))))))
+(defun check-inds (ind1 ind2 faces weights Xval)
+  "Checks that both ind1 and ind2 respect:
+* No duplicates.
+* Pay for X.
+* Amount to the same weight value.
+I : ind1, ind2: The two sets of coins to check.
+    faces, weights: 
+    Xval: The sum of 2^d terms in X."
+  ;; If both are nil, return OK
+  (when (or (not ind1) (not ind2))
+    (if (and (not ind1) (not ind2))
+	(return-from check-inds T)
+	(error "One set is empty and not the other.")))
+  (let ((ind-buf 0)
+	(w1 0)
+	(f1 0)
+	(w2 0)
+	(f2 0))
+    ;; Check that neither set has duplicates.
+    (loop for ind in (list ind1 ind2) do
+      (loop for i from 0 below (length ind) do
+	(setf ind-buf (aref ind i))
+	(loop for j from (1+ i) below (length ind) do
+	      (assert (/= ind-buf (aref ind j))))))
+    ;; Accumulate the faces and weights.
+    (loop for i across ind1 do
+      (incf w1 (aref weights i))
+      (incf f1 (expt 2 (aref faces i))))
+    (loop for i across ind2 do
+      (incf w2 (aref weights i))
+      (incf f2 (expt 2 (aref faces i))))
+    ;; Check against X and weights against each other.
+    (assert (= Xval f1 f2))
+    (assert (= w1 w2))))

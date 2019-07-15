@@ -7,6 +7,7 @@
        (faces (make-array ncoins :element-type 'fixnum))
        (weights (make-array ncoins :element-type 'fixnum))
        (X (make-array nX :element-type 'fixnum))
+       (Xval 0)
        (recur)
        (nonrecur))
   ;; Filling all with random data.
@@ -16,8 +17,11 @@
   (loop for i from 0 below nX do
     (setf (aref X i) (- (random (* 2 maxface)) maxface)))
   (setf X (delete-duplicates (sort X #'>)))
+  ;; Computing the face value of X.
+  (loop for f across X do
+	(incf Xval (expt 2 f)))
   ;; Computing the two results.
   (psetf recur (pm:pm-rec faces weights X)
 	 nonrecur (pm:pm-nonrec faces weights X))
   (format t "~A~%~A~%~A~%~A~%~A" faces weights X recur nonrecur)
-  (check-inds recur nonrecur faces weights))
+  (check-inds recur nonrecur faces weights Xval))
