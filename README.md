@@ -50,6 +50,7 @@ Let us take a particular problem defined by:
 
 * The sum _X_ to pay and its diadic expansion terms _k_. _X = Sum(2^k)_.
 
+| | | | |
 | --- | --- | --- | --- |
 | k | -2 | 0 | 1 |
 
