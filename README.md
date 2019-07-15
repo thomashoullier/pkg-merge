@@ -42,6 +42,7 @@ algorithm, which could maybe elude the readers of [1].
 Let us take a particular problem defined by:
 * The coins with face values _2^i_ and numismatic values _w_:
 
+| | | | | | | | | |
 | ---- | -- | -- | -- | -- | -- | -- | -- | -- |
 | coin id | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
 | face | -2 | -2 | -2 | -2 | -1 | -1 | 1 | 1 |
