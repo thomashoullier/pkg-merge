@@ -61,7 +61,7 @@ can be either no solution, or one optimal solution, or many optimal solutions
 (take the case of many identical coins for example).
 
 Let us explain in a practical way the general procedure one can follow to solve
-the problem. Image you have your coins in front of you on a table.
+the problem. Imagine you have your coins in front of you on a table.
 1. Begin by arranging them in groups of the same face values.
 1. Then inside those groups, arrange them in non-decreasing order of numismatic
 value.
@@ -94,6 +94,16 @@ The steps above for the particular problem are summarized in the following
 diagram:
 
 ![example package-merge](doc/example.svg)
+
+In real life, the solution set of coins is trivially processed. But in a
+computerized representation of this set, you would probably end up with a set
+of coins and packages. The packages are trees, in that they contain coins or
+other packages as children. The solution set is then a forest of trees (counting
+leaves as trees). You must have a way to gather all the leaves from the forest.
+
+For the present problem, a solution vector of ids is then:
+
+[1 ; 2 ; 3 ; 5 ; 7]
 
 ### Recursive point of view
 Let us consider:
