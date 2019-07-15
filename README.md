@@ -76,9 +76,9 @@ the coin of least weight (top of the stack) to pay. If you have no coin to do
 this, the coin collector is doomed, there is no solution.
 1. In the same stack, begin grouping the coins two by two, in order. This is the
 package step of the algorithm. Discard the last odd coin if there is any.
-1. You now have packages of coins that have the same face value as coin of the
-next stack, and a numismatic value that is the sum of that of the two coins that
-compose the package.
+1. You now have packages of coins that have the same face value as the coins of
+the next stack, and a numismatic value that is the sum of that of the two coins
+that compose the package.
 1. You can insert, or merge, these packages into the next stack of coins, 
 ensuring that the next stack of coins stays ordered by non-decreasing numismatic
 value.
