@@ -54,6 +54,47 @@ Let us take a particular problem defined by:
 | --- | --- | --- | --- |
 | k | -2 | 0 | 1 |
 
+To solve the problem, we must find the subset of coins that pays for X exactly
+while minimizing the total weight. The solution can be expressed by a series of
+coin ids, defined in the table above. Duplicates aren't allowed of course. There
+can be either no solution, or one optimal solution, or many optimal solutions
+(take the case of many identical coins for example).
+
+Let us explain in a practical way the general procedure one can follow to solve
+the problem. Image you have your coins in front of you on a table.
+1. Begin by arranging them in groups of the same face values.
+1. Then inside those groups, arrange them in non-decreasing order of numismatic
+value.
+1. Now think of these vectors of coins as stacks. You can pop coins from the end
+with lowest numismatic value.
+1. Since the diadic expansion of _X_ must be paid exactly, each term must
+necessarily be paid by a coin/package belonging to the stack with same face
+value.
+1. So far so good, we can proceed. Begin with the stack of lowest face value.
+1. If there is a term of _X_ of the same value to be paid, then immediatly use 
+the coin of least weight (top of the stack) to pay. If you have no coin to do 
+this, the coin collector is doomed, there is no solution.
+1. In the same stack, begin grouping the coins two by two, in order. This is the
+package step of the algorithm. Discard the last odd coin if there is any.
+1. You now have packages of coins that have the same face value as coin of the
+next stack, and a numismatic value that is the sum of that of the two coins that
+compose the package.
+1. You can insert, or merge, these packages into the next stack of coins, 
+ensuring that the next stack of coins stays ordered by non-decreasing numismatic
+value.
+1. Repeat from step 6 until you have either paid _X_ in full or reached the 
+point where you cannot find a coin/package to pay for a term in its expansion.
+
+The coins/packages that you have used to pay for the terms in the expansion of
+_X_ form the optimal solution set for your problem. The coin collector can take
+all those coins and use them to pay for the value _X_ while losing the minimum
+amount of numismatic value from his collection.
+
+The steps above for the particular problem are summarized in the following
+diagram:
+
+![example package-merge](doc/example.svg)
+
 ### Recursive point of view
 Let us consider:
 * A set _I_ of coins.
