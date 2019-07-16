@@ -174,6 +174,9 @@ heaviest coin left alone at the end of the operation, it is simply discarded.
   * MERGE: Merge _Pd+1_ into the next set _Ld+1_, while maintaining the
 non-decreasing weight order.
 
+## Dependencies
+The recursive version depends on https://github.com/thomashoullier/cl-binheap.
+
 ## References
 1. Larmore, Lawrence L., and Daniel S. Hirschberg. "A fast algorithm for optimal length-limited Huffman codes." Journal of the ACM (JACM) 37.3 (1990): 464-473. https://doi.org/10.1145/79147.79150
 1. Katajainen, Jyrki, Alistair Moffat, and Andrew Turpin. "A fast and space-economical algorithm for length-limited coding." International Symposium on Algorithms and Computation. Springer, Berlin, Heidelberg, 1995. https://doi.org/10.1007/BFb0015404
