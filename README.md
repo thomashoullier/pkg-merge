@@ -44,7 +44,7 @@ Let us take a particular problem defined by:
 
 | | | | | | | | | |
 | ------- | --- | --- | --- | --- | --- | --- | --- | --- |
-| coin id | 1  | 2  | 3  | 4  | 5  | 6  | 7 | 8 |
+| coin id | 0  | 1  | 2  | 3  | 4  | 5  | 6 | 7 |
 | face    | -2 | -2 | -2 | -2 | -1 | -1 | 1 | 1 |
 | weight  | 1  | 1  | 3  | 4  | 2  | 5  | 1 | 3 |
 
@@ -103,7 +103,7 @@ leaves as trees). You must have a way to gather all the leaves from the forest.
 
 For the present problem, a solution vector of ids is then:
 
-[1 ; 2 ; 3 ; 5 ; 7]
+[0 ; 1 ; 2 ; 4 ; 6]
 
 ### Recursive point of view
 Let us consider:
@@ -176,6 +176,29 @@ non-decreasing weight order.
 
 ## Dependencies
 The recursive version depends on https://github.com/thomashoullier/cl-binheap.
+
+## Usage
+Let us solve the example case we introduced above:
+
+```common-lisp
+(let ((faces #(-2 -2 -2 -2 -1 -1 1 1))
+      (weights #(1 1 3 4 2 5 1 3))
+      (X #(1 0 -2)))
+  (pm:pm-nonrec faces weights X))
+;=> #(0 4 1 2 6)
+```
+
+* `faces`: The set of `i` in _2^i_ of the face values. Can be in any order but 
+must correspond to the order in `weights`.
+* `weights`: The set of weights or numismatic value of each coin. Can be any
+type (double-float, fixnum etc).
+* `X`: The diadic expansion of X given by the `i` in _2^i_. Must be ordered in
+decreasing order.
+
+The result is given as the positions in `faces` and `weights` of the coins that
+compose the optimal solution set to the Coin Collector problem.
+
+The interface of `pm:pm-rec` is exactly the same.
 
 ## References
 1. Larmore, Lawrence L., and Daniel S. Hirschberg. "A fast algorithm for optimal length-limited Huffman codes." Journal of the ACM (JACM) 37.3 (1990): 464-473. https://doi.org/10.1145/79147.79150
