@@ -28,4 +28,14 @@
     (incf Xval (expt 2 f)))
   (check-inds possible-S (pm:pm-rec faces weights X) faces weights Xval))
 
+;; Test 4: README example
+(let* ((faces #(-2 -2 -2 -2 -1 -1 1 1))
+       (weights #(1 1 3 4 2 5 1 3))
+       (X #(1 0 -2))
+       (possible-S #(0 1 2 4 6))
+       (Xval 0))
+  (loop for f across X do
+    (incf Xval (expt 2 f)))
+  (check-inds possible-S (pm:pm-rec faces weights X) faces weights Xval))
+
 (format t "recur-test: PASSED.~%")
