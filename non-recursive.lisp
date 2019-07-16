@@ -63,6 +63,7 @@ I: faces: Array of faces. Not ordered, but must correspond with 'weights'.
 	(vector-push-extend (vector-pop curld) S)
 	(vector-pop X-cop))
       ;; Perform PACKAGE and MERGE.
+      ;; TODO: This part is sub-optimal at the moment.
       (let ((coin1) (coin2)
 	    (nextld (gethash (1+ d) Lds))
 	    (sortp))
