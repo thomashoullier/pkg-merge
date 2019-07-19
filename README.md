@@ -200,6 +200,34 @@ compose the optimal solution set to the Coin Collector problem.
 
 The interface of `pm:pm-rec` is exactly the same.
 
+## Performance
+No particular care was taken to improve the performance of these
+implementations. It can be noted that, running on large problems, the
+non-recursive implementation is faster by a factor of 3-4.
+Running `performance.lisp` on my machine looks like:
+
+```common-lisp
+Recursive:
+Evaluation took:
+  0.365 seconds of real time
+  0.364984 seconds of total run time (0.359902 user, 0.005082 system)
+  100.00% CPU
+  1,316,309,616 processor cycles
+  27,166,160 bytes consed
+  
+Non-recursive:
+Evaluation took:
+  0.079 seconds of real time
+  0.078899 seconds of total run time (0.077928 user, 0.000971 system)
+  100.00% CPU
+  284,733,900 processor cycles
+  16,741,984 bytes consed
+```
+
+There are steps that could be taken to make the recursive implementation faster,
+but readability would be greatly diminished. The goal of these implementations
+being mainly documentation and test reference, I won't go further.
+
 ## References
 1. Larmore, Lawrence L., and Daniel S. Hirschberg. "A fast algorithm for optimal length-limited Huffman codes." Journal of the ACM (JACM) 37.3 (1990): 464-473. https://doi.org/10.1145/79147.79150
 1. Katajainen, Jyrki, Alistair Moffat, and Andrew Turpin. "A fast and space-economical algorithm for length-limited coding." International Symposium on Algorithms and Computation. Springer, Berlin, Heidelberg, 1995. https://doi.org/10.1007/BFb0015404

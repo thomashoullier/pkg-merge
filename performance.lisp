@@ -21,7 +21,9 @@
   (loop for f across X do
     (incf Xval (expt 2 f)))
   ;; Computing the two results.
+  (format t "Recursive:~%")
   (time (setf recur (pm:pm-rec faces weights X)))
+  (format t "Non-recursive:~%")
   (time (setf nonrecur (pm:pm-nonrec faces weights X)))
   ;; Also check while we're at it.
   (check-inds recur nonrecur faces weights Xval))
